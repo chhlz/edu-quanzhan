@@ -1,0 +1,95 @@
+<!--继承母版页-->
+{% extends "layout.html" %}
+
+<!--要填充到母版页中body块的部分-->
+{% block body %}
+<div class="container-fluid">
+	<div class="body advert">
+	    <!-- 面包屑 -->
+	    <ol class="breadcrumb">
+	        <li><a href="javascript:;">广告管理</a></li>
+	        <li class="active">添加广告</li>
+	    </ol>
+	    <div class="advert-add">
+	    	<!--有文件上传时表单应设置enctype="multipart/form-data"-->
+	        <form action="/advert/add" class="form-horizontal" method="post" enctype="multipart/form-data">
+	            <div class="form-group">
+	                <label for="" class="col-md-3 control-label">标题</label>
+	                <div class="col-md-5">
+	                    <input type="text" class="form-control input-sm" name="title" placeholder="填写广告标题">
+	                </div>
+	            </div>
+	            <div class="form-group">
+	                <label for="" class="col-md-3 control-label">图片</label>
+	                <div class="col-md-5">
+	                    <input type="file" id="file" class="form-control input-sm" name="image" placeholder="填写广告图片">
+	                </div>
+	            </div>
+	            <div class="form-group">
+	                <label for="" class="col-md-3 control-label">链接</label>
+	                <div class="col-md-5">
+	                    <input type="text" class="form-control input-sm" name="link" placeholder="填写广告链接">
+	                </div>
+	            </div>
+	            <div class="form-group">
+	                <label for="" class="col-md-3 control-label">开始时间</label>
+	                <div class="col-md-5">
+	                    <input type="text" class="form-control input-sm" name="start_time" placeholder="填写广告开始时间">
+	                </div>
+	            </div>
+	            <div class="form-group">
+	                <label for="" class="col-md-3 control-label">结束时间</label>
+	                <div class="col-md-5">
+	                    <input type="text" class="form-control input-sm" name="end_time" placeholder="填写广告结束时间">
+	                </div>
+	            </div>
+	            
+	            <div class="form-group">
+	                <div class="col-md-8">  
+	                    <input type="submit" class="btn btn-success btn-sm pull-right" value="保存" />
+	                </div>                          
+	            </div>
+	        </form>
+	    </div>
+	</div>
+</div>
+{% endblock %}
+
+<!--要填充到母版页中script块的部分-->
+{% block script %}
+<script>
+	
+	$("form").on("submit",function(e){
+		
+		/*要采用异步提交包含文件上传的表单时，采用以下方式*/
+		//用js构建一个表单对象
+//		var formData = new FormData()
+//		formData.append('name','Jack')
+//		formData.append('age','18')
+//		formData.append('file',document.getElementById('file').files[0])//表单中文件上传的部分
+//		
+//		//自定义一个请求对象，向'/advert/add'路由发送请求
+//		var xhr = new XMLHttpRequest()
+//		xhr.open('post','/advert/add')
+//		xhr.send(formData)//发送自己构建的表单对象
+		
+		
+		//使用异步提交替换默认的表单同步提交
+		$.ajax({
+			url: $(this).attr('action'),
+			type: $(this).attr('method'),
+			data: new FormData($(this)[0]),//用js构建一个FormData对象（因为包含文件上传，所以不能直接serialize()）
+			processData: false, //当data使用FormData对象时，必须设置processData为false，否则Jquery会将数据指定为使用表单默认的同步提交 
+			contentType: false, //当data使用FormData对象，且包含文件上传时，必须设置contentType为false，否则其contentType会被Jquery改为不带文件上传的表单提交
+			success: function(data){
+				if(data.err_code==0){
+					window.location.href='/advert';
+				}
+			}
+		})
+		
+		return false;//阻止表单默认的提交行为
+	})
+</script>
+{% endblock %}
+

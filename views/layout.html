@@ -1,0 +1,39 @@
+<!--母版页-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>学IT - 后台管理系统</title>
+    <!--公共引用-->
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css"><!--Node中写相对路径时是相对于url而不是相对于本文件，最好写绝对路径-->
+    <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="/node_modules/nprogress/nprogress.css">
+    <link rel="stylesheet" href="/public/less/index.css">
+    
+    <!--此处block用于添加每个页面特有的引用-->
+    {% block style %}
+    {% endblock %}
+</head>
+<body>
+    <!--引入头部-->
+    {% include "header.html"%}
+    <!-- 主体 -->
+    <div class="main">
+        <!-- 引入侧边栏 -->
+        {% include "sidebar.html"%}
+        
+        <!-- 此处block用于添加每个页面特有的主体部分 -->
+        {% block body %}
+        {% endblock %}
+    </div>
+    <script src="/node_modules/jquery/dist/jquery.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="/node_modules/nprogress/nprogress.js"></script>
+    <script src="/public/js/common.js"></script>
+    
+    <!--此处block用于添加每个页面特有的script脚本-->
+    {% block script %}
+    {% endblock %}
+    
+</body>
+</html>
